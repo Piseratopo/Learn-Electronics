@@ -1,0 +1,207 @@
+\documentclass[a4paper, 11pt, titlepage, openany]{book}
+
+\usepackage[esperanto, shorthands=off]{babel}
+\usepackage{fontspec}
+\usepackage{indentfirst}
+
+\usepackage[
+   a4paper,
+   bindingoffset=0.5cm,
+   inner=2cm, outer=2cm, top=2cm, bottom=2cm,
+   headheight=15pt
+]{geometry}
+
+\usepackage{xcolor}
+
+\definecolor{techBlue}{RGB}{6,117,202}
+\definecolor{signalRed}{RGB}{214, 48, 49}
+\definecolor{signalGreen}{RGB}{0, 158, 96}
+\definecolor{signalAmber}{RGB}{217, 119, 6}
+\definecolor{slateGray}{RGB}{71, 85, 105}
+\definecolor{softPanel}{RGB}{244, 247, 250}
+
+\newcommand{\hlblue}[1]{\textcolor{techBlue}{\textbf{#1}}}
+\newcommand{\hlred}[1]{\textcolor{signalRed}{\textbf{#1}}}
+\newcommand{\hlgreen}[1]{\textcolor{signalGreen}{\textbf{#1}}}
+\newcommand{\hlamber}[1]{\textcolor{signalAmber}{\textbf{#1}}}
+
+\usepackage{amsmath, amssymb, bm, steinmetz}
+\allowdisplaybreaks
+
+\usepackage{siunitx}
+\sisetup{
+   output-decimal-marker = {,},
+   group-minimum-digits = 4,
+   list-final-separator = { kaj },
+   range-phrase = { ĝis }
+}
+
+\usepackage[siunitx, RPvoltages]{circuitikz}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+
+\usetikzlibrary{arrows.meta, babel, calc, positioning, shapes.geometric}
+
+\ctikzset{
+   bipoles/thickness=1.2,
+   nodes width=0.05
+}
+
+\tikzset{
+   wire vcc/.style={draw=signalRed, thick},
+   wire gnd/.style={draw=signalGreen, thick},
+   wire sig/.style={draw=techBlue, thick},
+   block box/.style={
+      draw=techBlue,
+      fill=softPanel,
+      rounded corners=2pt,
+      thick,
+      minimum width=2.4cm,
+      minimum height=1cm,
+      align=center
+   },
+   sig arrow/.style={->, >={Stealth[scale=0.85]}, thick}
+}
+
+\pgfplotsset{
+   elecplot/.style={
+      width=0.85\linewidth,
+      height=5.5cm,
+      grid=major,
+      grid style={dashed, gray!30},
+      axis lines=left,
+      xlabel style={font=\small},
+      ylabel style={font=\small},
+      tick label style={font=\small},
+      legend style={font=\small, draw=gray!30, fill=white},
+      cycle list={
+         {techBlue, very thick},
+         {signalRed, very thick},
+         {signalGreen, very thick, dashed},
+         {signalAmber, very thick, dotted}
+      }
+   }
+}
+
+\usepackage{float, caption}
+\captionsetup{
+   labelfont={bf, color=techBlue},
+   font=small
+}
+
+\usepackage{array, booktabs, longtable, multirow}
+\usepackage{enumitem}
+\setlist{itemsep=2pt, topsep=4pt}
+
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+
+\usepackage[explicit, indentafter]{titlesec}
+\assignpagestyle{\chapter}{fancy}
+\assignpagestyle{\part}{fancy}
+
+\fancyhead[LO]{\textcolor{slateGray}{\small\nouppercase{\leftmark}}}
+\fancyhead[RE]{\textcolor{slateGray}{\small\nouppercase{\rightmark}}}
+\fancyhead[RO,LE]{\textcolor{techBlue}{\textbf{\thepage}}}
+
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\headrule}{\color{techBlue!40}\hrule width\headwidth height\headrulewidth}
+\renewcommand{\footrulewidth}{0pt}
+\setlength{\headsep}{0.5cm}
+
+\titleformat{\part}
+   {\normalfont\Huge\bfseries}
+   {}
+   {0pt}
+   {\centering\textcolor{techBlue}{{\fontsize{44}{52}\selectfont Parto \Roman{part}}\\[0.3em]#1}}
+
+\titleformat{\chapter}
+   {\normalfont\Huge\bfseries}
+   {}
+   {0pt}
+   {\textcolor{techBlue}{\fontsize{40}{46}\selectfont\thechapter}\\[0.2em]#1}
+   [\vspace{0.3em}{\color{techBlue}\titlerule[1.2pt]}]
+
+\titleformat{name=\chapter,numberless}
+   {\normalfont\Huge\bfseries}
+   {}
+   {0pt}
+   {\textcolor{techBlue}{#1}}
+   [\vspace{0.3em}{\color{techBlue}\titlerule[1.2pt]}]
+
+\titleformat{\section}
+   {\normalfont\Large\bfseries}
+   {}
+   {0pt}
+   {\textcolor{techBlue}{\thesection}\quad #1}
+   [\vspace{0.2em}{\color{techBlue!40}\titlerule[0.8pt]}]
+
+\titleformat{\subsection}
+   {\normalfont\large\bfseries}
+   {}
+   {0pt}
+   {\textcolor{techBlue}{\thesubsection}\quad #1}
+
+\numberwithin{equation}{chapter}
+\renewcommand{\thetable}{\thechapter.\arabic{table}}
+\renewcommand{\thefigure}{\thechapter.\arabic{figure}}
+
+\newcounter{example}[chapter]
+\renewcommand{\theexample}{\thechapter.\arabic{example}}
+\NewDocumentCommand{\example}{o}{
+   \refstepcounter{example}
+   \par\medskip\noindent\textbf{\textcolor{signalGreen}{Ekzemplo \theexample:}}
+   \IfNoValueTF{#1}{\label{eg:eg\theexample}}{\label{#1}}
+}
+
+\newcounter{exercise}
+\NewDocumentCommand{\exercise}{o}{
+   \refstepcounter{exercise}
+   \par\medskip\noindent\textbf{\textcolor{techBlue}{Ekzerco \arabic{exercise}:}}
+   \IfNoValueTF{#1}{\label{ex:ex\arabic{exercise}}}{\label{#1}}
+}
+
+\newcounter{solution}
+\NewDocumentCommand{\solution}{o}{
+   \refstepcounter{solution}
+   \par\smallskip\noindent\textbf{\textcolor{slateGray}{Solvo de ekzerco~\IfNoValueTF{#1}{\ref{ex:ex\arabic{exercise}}}{\ref{#1}}:}}
+   \IfNoValueTF{#1}{\label{sol\arabic{solution}}}{\label{sol:#1}}
+}
+
+\newcommand{\notebox}[2][techBlue]{\par\medskip\noindent\colorbox{softPanel}{\parbox{\dimexpr\linewidth-2\fboxsep\relax}{\textcolor{#1}{\textbf{Rimarko:}} #2}}\par\medskip}
+
+\usepackage[
+   backend=biber,
+   style=numeric,
+   maxbibnames=99,
+   sorting=nty
+]{biblatex}
+
+\usepackage{hyperref}
+\usepackage{bookmark}
+\hypersetup{
+   colorlinks=true,
+   linkcolor=techBlue,
+   urlcolor=techBlue,
+   citecolor=signalGreen
+}
+
+\let\oldchapter\chapter
+\RenewDocumentCommand{\chapter}{s o m}{\IfBooleanTF{#1}{\oldchapter*{#3}\phantomsection\addcontentsline{toc}{chapter}{#3}\markboth{#3}{#3}}{\IfValueTF{#2}{\oldchapter[#2]{#3}}{\oldchapter{#3}}}}
+
+\title{\vspace*{2cm}{\color{techBlue}\rule{\linewidth}{2pt}}\\[1.2em]{\Huge\bfseries\textcolor{techBlue}{TEKNIKA DOKUMENTO PRI ELEKTRONIKO}}\\[0.6em]{\large\textcolor{slateGray}{Analogaj cirkvitoj, duonkonduktaj komponantoj kaj signalprilaborado}}\\[1.2em]{\color{techBlue}\rule{\linewidth}{0.8pt}}\vspace{2cm}}
+\author{Bùi Nhật Minh}
+\date{\today}
+
+\begin{document}
+
+\pagenumbering{gobble}
+\maketitle
+
+\pagenumbering{arabic}
+\tableofcontents
+
+\input{cxapitro/enkonduko_al_elektro.tex}
+
+\end{document}

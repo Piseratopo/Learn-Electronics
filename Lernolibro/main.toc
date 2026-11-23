@@ -1,0 +1,3 @@
+\babel@toc {esperanto}{}\relax 
+\contentsline {chapter}{Enhavo\markboth {\MakeUppercase []{Enhavo}}{\MakeUppercase []{Enhavo}}}{1}{section*.2}%
+\contentsline {chapter}{\numberline {1}Enkonduko al elektro}{2}{chapter.1}%
